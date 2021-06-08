@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+	<div id="main">
+		<div class="outer">
+			<div class="middle">
+				<div class="inner">
+					<div id="menu" style="display: block;">
+						<button id="pledgeButton" onclick="showPledgeForm();" class="menubutton">Pledge goods or labor</button><br>
+						<button id="requestButton" onclick="showRequestForm();" class="menubutton">Request goods or labor</button><br>
+						<button id="viewButton" onclick="window.location.href='{{ url_for('view') }}';" class="menubutton">View existing requests</button><br>
+					</div>
+					<div id="pledgeForm" class="form" style="display: none;">
+						<form method="POST">
+							{{ pledgeform.csrf_token }}
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.firstName.label }}
+									</div>
+									<div>
+										{{ pledgeform.firstName() }}
+										{%- for error in pledgeform.firstName.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.lastName.label }}
+									</div>
+									<div>
+										{{ pledgeform.lastName() }}
+										{%- for error in pledgeform.lastName.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.organization.label }}
+									</div>
+									<div>
+										{{ pledgeform.organization() }}
+										{%- for error in pledgeform.organization.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">								
+								<div class="formfield">
+									<div>
+										{{ pledgeform.email.label }}
+									</div>
+									<div>
+										{{ pledgeform.email() }}
+										{%- for error in pledgeform.email.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.phone.label }}
+									</div>
+									<div>
+										{{ pledgeform.phone() }}
+										{%- for error in pledgeform.phone.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            					
+				            </div>
+				            <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.goods.label }}
+									</div>
+									<div>
+										{{ pledgeform.goods() }}
+										{%- for error in pledgeform.goods.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ pledgeform.otherGoods.label }}
+									</div>
+									<div>
+										{{ pledgeform.otherGoods(cols="30", rows="3") }}
+										{%- for error in pledgeform.otherGoods.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>		            				            
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.labor.label }}
+									</div>
+									<div>
+										{{ pledgeform.labor() }}
+										{%- for error in pledgeform.labor.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ pledgeform.otherLabor.label }}
+									</div>
+									<div>
+										{{ pledgeform.otherLabor(cols="30", rows="3") }}
+										{%- for error in pledgeform.otherLabor.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>	            				            
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.cityLocation.label }}
+									</div>
+									<div>
+										{{ pledgeform.cityLocation() }}
+										{%- for error in pledgeform.cityLocation.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.regionLocation.label }}
+									</div>
+									<div>
+										{{ pledgeform.regionLocation() }}
+										{%- for error in pledgeform.regionLocation.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.countryLocation.label }}
+									</div>
+									<div>
+										{{ pledgeform.countryLocation() }}
+										{%- for error in pledgeform.countryLocation.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.description.label }}
+									</div>
+									<div>
+										{{ pledgeform.description(cols="30", rows="5") }}
+										{%- for error in pledgeform.description.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+				            </div>
+				            <div class="formrow">														
+								<div class="formfield">
+									<div>
+										{{ pledgeform.recaptcha() }}
+										{%- for error in pledgeform.recaptcha.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>					        				            
+				            <div class="formrow">														
+								<div class="formfield">
+									<div>
+										{{ pledgeform.submit() }}
+										{%- for error in pledgeform.submit.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>					        				            
+						</form>
+						<button onclick="showMenu();">Go back</button><br>						
+					</div>
+					<div id="requestForm" class="form" style="display: none;">
+						<form method="POST">
+							{{ requestform.csrf_token }}
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.firstName.label }}
+									</div>
+									<div>
+										{{ requestform.firstName() }}
+										{%- for error in requestform.firstName.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.lastName.label }}
+									</div>
+									<div>
+										{{ requestform.lastName() }}
+										{%- for error in requestform.lastName.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.organization.label }}
+									</div>
+									<div>
+										{{ requestform.organization() }}
+										{%- for error in requestform.organization.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">								
+								<div class="formfield">
+									<div>
+										{{ requestform.email.label }}
+									</div>
+									<div>
+										{{ requestform.email() }}
+										{%- for error in requestform.email.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.phone.label }}
+									</div>
+									<div>
+										{{ requestform.phone() }}
+										{%- for error in requestform.phone.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            					
+				            </div>
+				            <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.goods.label }}
+									</div>
+									<div>
+										{{ requestform.goods() }}
+										{%- for error in requestform.goods.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ requestform.otherGoods.label }}
+									</div>
+									<div>
+										{{ requestform.otherGoods(cols="30", rows="3") }}
+										{%- for error in requestform.otherGoods.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>		            				            
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.labor.label }}
+									</div>
+									<div>
+										{{ requestform.labor() }}
+										{%- for error in requestform.labor.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ requestform.otherLabor.label }}
+									</div>
+									<div>
+										{{ requestform.otherLabor(cols="30", rows="3") }}
+										{%- for error in requestform.otherLabor.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>	            				            
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.cityLocation.label }}
+									</div>
+									<div>
+										{{ requestform.cityLocation() }}
+										{%- for error in requestform.cityLocation.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.regionLocation.label }}
+									</div>
+									<div>
+										{{ requestform.regionLocation() }}
+										{%- for error in requestform.regionLocation.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.countryLocation.label }}
+									</div>
+									<div>
+										{{ requestform.countryLocation() }}
+										{%- for error in requestform.countryLocation.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.description.label }}
+									</div>
+									<div>
+										{{ requestform.description(cols="30", rows="5") }}
+										{%- for error in requestform.description.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+				            </div>
+				            <div class="formrow">														
+								<div class="formfield">
+									<div>
+										{{ requestform.recaptcha() }}
+										{%- for error in requestform.recaptcha.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>					        				            
+				            <div class="formrow">														
+								<div class="formfield">
+									<div>
+										{{ requestform.submit() }}
+										{%- for error in requestform.submit.errors -%}
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>					        				            
+						</form>
+						<button onclick="showMenu();">Go back</button><br>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	// Show clicked item
+	function hideAll() 
+	{
+		$('#menu')[0].style.display = "none";
+		$('#pledgeForm')[0].style.display = "none";
+		$('#requestForm')[0].style.display = "none";
+	}
+	function showPledgeForm()
+	{
+		hideAll();
+		$('#pledgeForm')[0].style.display = "block";
+	}
+	function showRequestForm()
+	{
+		hideAll();
+		$('#requestForm')[0].style.display = "block";
+	}
+	function showMenu()
+	{
+		hideAll();
+		$('#menu')[0].style.display = "block";
+	}
+</script>
+{% endblock %}

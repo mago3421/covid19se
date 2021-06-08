@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+	<div id="main" style="margin-bottom: 2em;">
+		<div class="logo outer">
+			<div class="middle">
+				<div class="inner">
+					<div>
+						<img width=350 height=350 src="/static/img/covid19se_logo.svg" style="background-color: white;">
+					</div>
+					<div>
+						<p style="font-size: 1.1em; font-weight: bold;">Thank you for {{ confirmType }}! If you have any questions or concerns, please email administrator@covid19se.com. To view existing requests, please follow the link below.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="outer">
+			<div class="middle">
+				<div class="inner">
+					<div id="menu" style="display: block; top: 50%">
+						<button id="homeButton" onclick="window.location.href='{{ url_for('index') }}';" class="menubutton">Go to main page</button><br>
+						<button id="viewButton" onclick="window.location.href='{{ url_for('view') }}';" class="menubutton">View existing requests</button><br>
+					</div>					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+{% endblock %}

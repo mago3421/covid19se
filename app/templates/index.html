@@ -1,0 +1,567 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body onload="configure();">
+	<div id="main" style="margin-bottom: 2em;">
+		<div class="logo outer">
+			<div class="middle">
+				<div class="inner">
+					<div>
+						<img width=350 height=350 src="/static/img/covid19se_logo.svg" style="background-color: white;">
+					</div>
+					<div>
+						<p style="font-size: 1.1em; font-weight: bold;">Welcome to the COVID-19 Supply Exchange! This application connects donated supplies and labor to non-medical organizations in need during the COVID-19 public health crisis. If you would like to pledge goods or labor, please fill out a pledge form. If your organization is in need of supplies or volunteers, please fill out a request form. Pledges and requests shall be matched by geographical proximity. Contact information will be shared with matching parties only. To view existing requests, please follow the link below.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="outer">
+			<div class="middle">
+				<div class="inner">
+					<div id="menu" style="display: block; top: 50%">
+						<button id="pledgeButton" onclick="showPledgeForm();" class="menubutton">Pledge goods or labor</button><br>
+						<button id="requestButton" onclick="showRequestForm();" class="menubutton">Request goods or labor</button><br>
+						<button id="viewButton" onclick="window.location.href='{{ url_for('view') }}';" class="menubutton">View existing requests</button><br>
+					</div>
+					<div id="pledgeFormDiv" class="form" style="display: none;">
+						<form id="pledgeForm" method="POST">
+							{{ pledgeform.csrf_token }}
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.firstName.label }}
+									</div>
+									<div>
+										{{ pledgeform.firstName() }}
+										{%- for error in pledgeform.firstName.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.lastName.label }}
+									</div>
+									<div>
+										{{ pledgeform.lastName() }}
+										{%- for error in pledgeform.lastName.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.organization.label }}
+									</div>
+									<div>
+										{{ pledgeform.organization() }}
+										{%- for error in pledgeform.organization.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">								
+								<div class="formfield">
+									<div>
+										{{ pledgeform.email.label }}
+									</div>
+									<div>
+										{{ pledgeform.email() }}
+										{%- for error in pledgeform.email.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.phone.label }}
+									</div>
+									<div>
+										{{ pledgeform.phone() }}
+										{%- for error in pledgeform.phone.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            					
+				            </div>
+				            <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.goods.label }}
+									</div>
+									<div class="error">
+										{{ pledgeform.goods() }}
+										{%- for error in pledgeform.goods.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ pledgeform.otherGoods.label }}
+									</div>
+									<div>
+										{{ pledgeform.otherGoods(cols="30", rows="3") }}
+										{%- for error in pledgeform.otherGoods.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>		            				            
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.labor.label }}
+									</div>
+									<div>
+										{{ pledgeform.labor() }}
+										{%- for error in pledgeform.labor.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ pledgeform.otherLabor.label }}
+									</div>
+									<div>
+										{{ pledgeform.otherLabor(cols="30", rows="3") }}
+										{%- for error in pledgeform.otherLabor.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>	            				            
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.cityLocation.label }}
+									</div>
+									<div>
+										{{ pledgeform.cityLocation() }}
+										{%- for error in pledgeform.cityLocation.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.regionLocation.label }}
+									</div>
+									<div>
+										{{ pledgeform.regionLocation() }}
+										{%- for error in pledgeform.regionLocation.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ pledgeform.countryLocation.label }}
+									</div>
+									<div>
+										{{ pledgeform.countryLocation() }}
+										{%- for error in pledgeform.countryLocation.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ pledgeform.description.label }}
+									</div>
+									<div>
+										{{ pledgeform.description(cols="30", rows="5") }}
+										{%- for error in pledgeform.description.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+				            </div>
+				            <br>
+				            <div class="formrow">
+								<div class="formfield" onclick="viewToS();">
+									{{ pledgeform.pledgeToS() }} {{ pledgeform.pledgeToS.label }}
+									{%- for error in pledgeform.pledgeToS.errors -%}
+										<br>
+										<span style="color: red;">[{{ error }}]</span>
+									{%- endfor -%}
+								</div>
+				            </div>
+				            <br>  				            
+				            <div class="formrow">														
+								<div class="formfield">
+									<div class="g-recaptcha" data-sitekey="6Lfe9-cUAAAAAH_HThZuuX0PcWh-C3PtczmN5Cdv" data-callback="enableSubmit">								
+									</div>
+					            </div>															
+				            </div>
+				            <br>				            				        				            				        				            
+				            <div class="formrow">														
+								<div class="formfield">
+									<div id="pledgeFormSubmit">
+										{{ pledgeform.pledgeSubmit() }}
+										{%- for error in pledgeform.pledgeSubmit.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>					        				            
+						</form>
+						<button onclick="showMenu();">Go back</button><br>						
+					</div>
+					<div id="requestFormDiv" class="form" style="display: none;">
+						<form id="requestForm" method="POST">
+							{{ requestform.csrf_token }}
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.firstName.label }}
+									</div>
+									<div>
+										{{ requestform.firstName() }}
+										{%- for error in requestform.firstName.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.lastName.label }}
+									</div>
+									<div>
+										{{ requestform.lastName() }}
+										{%- for error in requestform.lastName.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.organization.label }}
+									</div>
+									<div>
+										{{ requestform.organization() }}
+										{%- for error in requestform.organization.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">								
+								<div class="formfield">
+									<div>
+										{{ requestform.email.label }}
+									</div>
+									<div>
+										{{ requestform.email() }}
+										{%- for error in requestform.email.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.phone.label }}
+									</div>
+									<div>
+										{{ requestform.phone() }}
+										{%- for error in requestform.phone.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            					
+				            </div>
+				            <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.goods.label }}
+									</div>
+									<div>
+										{{ requestform.goods() }}
+										{%- for error in requestform.goods.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ requestform.otherGoods.label }}
+									</div>
+									<div>
+										{{ requestform.otherGoods(cols="30", rows="3") }}
+										{%- for error in requestform.otherGoods.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>		            				            
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.labor.label }}
+									</div>
+									<div>
+										{{ requestform.labor() }}
+										{%- for error in requestform.labor.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+								<div class="formfield">
+									<div>
+										{{ requestform.otherLabor.label }}
+									</div>
+									<div>
+										{{ requestform.otherLabor(cols="30", rows="3") }}
+										{%- for error in requestform.otherLabor.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>	            				            
+							<div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.cityLocation.label }}
+									</div>
+									<div>
+										{{ requestform.cityLocation() }}
+										{%- for error in requestform.cityLocation.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.regionLocation.label }}
+									</div>
+									<div>
+										{{ requestform.regionLocation() }}
+										{%- for error in requestform.regionLocation.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+								<div class="formfield">
+									<div>
+										{{ requestform.countryLocation.label }}
+									</div>
+									<div>
+										{{ requestform.countryLocation() }}
+										{%- for error in requestform.countryLocation.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>					            
+					        </div>
+					        <br>
+					        <div class="formrow">
+								<div class="formfield">
+									<div>
+										{{ requestform.description.label }}
+									</div>
+									<div>
+										{{ requestform.description(cols="30", rows="5") }}
+										{%- for error in requestform.description.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>
+				            </div>
+				            <br>
+				            <div class="formrow">
+								<div class="formfield">
+									{{ requestform.requestToS() }} {{ requestform.requestToS.label }}
+									{%- for error in requestform.requestToS.errors -%}
+										<br>
+										<span style="color: red;">[{{ error }}]</span>
+									{%- endfor -%}
+								</div>
+				            </div>
+				            <br> 
+				            <div class="formrow">														
+								<div class="formfield">
+									<div class="g-recaptcha" data-sitekey="6Lfe9-cUAAAAAH_HThZuuX0PcWh-C3PtczmN5Cdv" data-callback="enableSubmit">								
+									</div>
+					            </div>															
+				            </div>
+				            <br>
+				            <div class="formrow">														
+								<div class="formfield">
+									<div id="requestFormSubmit">
+										{{ requestform.requestSubmit() }}
+										{%- for error in requestform.requestSubmit.errors -%}
+											<br>
+								            <span style="color: red;">[{{ error }}]</span>
+							            {%- endfor -%}									
+									</div>
+					            </div>															
+				            </div>
+				            <br>					        				            
+						</form>
+						<button onclick="showMenu();">Go back</button><br>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="ToSModal" class="modaloverlay">
+	    <div class="modalbox">
+	        <div class="modaltext">
+			    <p>In regards to this end-user license agreement (EULA): "You" shall refer to any user of covid19se.com, "website" shall refer to this website, covid19se.com, and "owners" shall refer to the maintainers of covid19se.com. By using this website (covid19se.com), you acknowledge that this website is strictly a social networking site. You acknowledge that covid19se.com does not make any guarantees or promises on any pledges or requests submitted. By using this website, you release its owners from any and all liability for any damages brought on by third parties. You acknowledge that this website is not a substitute for legal workplace precautions. You acknowledge that this website does not provide any medical advice, treatment, consultation, or other medical services. You acknowledge that any user information submitted to covid19se.com is truthful and accurate. In return, this website promises not to release or use any user data for solicitation, data mining, or other purposes other than to connect pledges with requests.</p>
+	        </div>
+	        <div class="modalmenu">
+			    <button onclick="acceptToS()">Accept</button>
+			    <button onclick="declineToS()">Decline</button>
+	        </div>
+	        <br>
+	    </div>
+	</div>
+	{% if errorModal %}
+	<div id="errorModal" class="modaloverlay" style="display: block;">
+	    <div class="modalbox" style="width: 30%;">
+	        <div class="modaltext">
+				<p>Your information could not submitted. Please see your form for more details.</p>
+	        </div>
+	        <div class="modalmenu">
+			    <button onclick="clearErrorModal()">Okay</button>
+	        </div>
+		</div>
+	</div>
+	{% endif %}		
+</body>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+	function configure()
+	{
+		$('#pledgeToS').attr('onclick', 'event.preventDefault(); viewToS();');
+		$('#requestToS').attr('onclick', 'event.preventDefault(); viewToS();');
+	}
+	
+	function hideAll() 
+	{
+		grecaptcha.reset();
+		uncheckEULA();
+		disableSubmit();
+		$('#menu')[0].style.display = "none";
+		$('#pledgeFormDiv')[0].style.display = "none";
+		$('#requestFormDiv')[0].style.display = "none";		
+	}
+
+	function showPledgeForm()
+	{
+		hideAll();
+		$('#pledgeFormDiv')[0].style.display = "block";
+		
+	}
+	function showRequestForm()
+	{
+		hideAll();
+		$('#requestFormDiv')[0].style.display = "block";
+	}
+	function showMenu()
+	{
+		hideAll();
+		$('#menu')[0].style.display = "block";
+	}
+	
+	function acceptToS()
+	{
+		if ($('#pledgeFormDiv')[0].style.display != "none")
+		{
+			$('#pledgeToS')[0].checked = true;
+		}
+		else if ($('#requestFormDiv')[0].style.display != "none")
+		{
+			$('#requestToS')[0].checked = true;
+		}
+		hideToS();
+	}
+	
+	function declineToS()
+	{
+		uncheckEULA();
+		hideToS();
+	}
+	
+	function viewToS()
+	{
+		$('#ToSModal')[0].style.display = "block";
+	}
+	
+	function hideToS()
+	{
+		$('#ToSModal')[0].style.display = "none";
+	}
+
+	function clearErrorModal()
+	{
+		$('#errorModal')[0].style.display = "none";
+	}
+	
+	var enableSubmit = function()
+	{
+		// Activate submit button of visible form
+		if ($('#pledgeFormDiv')[0].style.display != "none") 
+		{
+			$('#pledgeSubmit')[0].disabled = false;
+		}
+		else if ($('#requestFormDiv')[0].style.display != "none")
+		{
+			$('#requestSubmit')[0].disabled = false;
+		}
+	}
+
+	function disableSubmit()
+	{
+		$('#pledgeSubmit')[0].disabled = true;
+		$('#requestSubmit')[0].disabled = true;
+	}
+	
+	function uncheckEULA()
+	{
+		$('#pledgeToS')[0].checked = false;
+		$('#requestToS')[0].checked = false;
+	}
+</script>
+{% endblock %}

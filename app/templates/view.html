@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+	<div id="main">
+		<div class="outer">
+			<div class="middle">
+				<div id="orders" style="vertical-align: middle; text-align: center;">
+					<hr>					
+					{% if requests|length > 0 %}
+						<div class="inner" style="font-size: 1.5em; font-weight: bold;">
+							<p>Below are current requests</p>
+						</div>
+					{% else %}
+						<div class="inner" style="font-size: 1.5em; font-weight: bold;">
+							<p>There are no requests at the moment.</p>
+						</div>
+					{% endif %}
+						<div style="display: block;">
+							<button style="background-color: white; border: black solid; color: black; text-align: center; text-decoration: none; font-size: 1.1em; font-weight: bold; margin-bottom: 0.3em; cursor: pointer;" onclick="window.location.href='{{  url_for('index') }}';">Go back</button>
+						</div>
+						<hr>
+					{% for request in requests %}
+						<div class="inner">
+							<p>Requesting organization: {{ request.organization }}</p>
+							<p>Location: {{ request.location }}</p>
+							<p>Goods requested: {{ request.goods|join(', ') }}</p>
+							<p>Labor requested: {{ request.labor|join(', ') }}</p>
+							<p>Description: {{ request.description }}</p>
+						</div>
+						<hr>
+					{% endfor %}					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+{% endblock %}
